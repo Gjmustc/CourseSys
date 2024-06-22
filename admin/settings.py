@@ -94,6 +94,7 @@ DATABASES = {
 # Add custom SQL files
 SQL_FILE = [
     os.path.join(BASE_DIR, "source/execute.sql"),
+    os.path.join(BASE_DIR, "source/database.sql"),
 ]
 
 # Password validation

@@ -327,25 +327,16 @@ class GetCourseInfo(APIView):
         courseid = str(request.GET.get('courseid', None))
         sql = MySQL()
         result = sql.getCourseInfo(courseid)
+        materiallist = []
+        for i in result:
+            materiallist.append(i[4] if i[4] is not None else "")
         course = {
-            "courseid": result[0],
-            "coursename": result[1],
-            "coursecredit": result[2],
-            "coursedescription": result[3] if result[3] is not None else "",
-            "material": result[4] if result[4] is not None else "",
-            "materiallist":[],
+            "courseid": result[0][0],
+            "coursename": result[0][1],
+            "coursecredit": result[0][2],
+            "coursedescription": result[0][3] if result[0][3] is not None else "",
+            "materiallist": materiallist,
         }
-        i = 0
-        while i < len(course):
-            j = i
-            if course[j]['material'] is not None:
-                course[j]['materiallist'].append(course[j]['material'])
-            i += 1
-            while course[j]['courseid'] == course[i]['courseid'] and i < len(course):
-                if course[i]['material'] is not None:
-                    course[j]['materiallist'].append(course[i]['material'])
-                course.pop(i)
-
         return Response(course)
 
 class GetClassInfo(APIView):
